@@ -3,6 +3,7 @@ package org.service;
 import org.model.Flight;
 
 import java.time.Duration;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,7 +17,11 @@ public class FasterFlights {
                         existing.getDuration().compareTo(replacement.getDuration()) < 0 ? existing : replacement))
                 .values());
 
-        for (Flight flight : uniqueFlights) {
+        printFastestFlights(uniqueFlights);
+    }
+
+    private static void printFastestFlights(Collection<Flight> flights) {
+        for (Flight flight : flights) {
             System.out.println(
                     "Cамый быстрый маршрут для компании - " + flight.getCarrier() +
                             ", займет время в пути - " + formatDuration(flight.getDuration())

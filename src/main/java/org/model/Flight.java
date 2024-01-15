@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 @Data
 public class Flight {
@@ -22,6 +21,9 @@ public class Flight {
 
     private final Duration duration;
 
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yy H:mm");
+
+
     public Flight(String origin, String originName, String destination, String destinationName,
                   String departureDate, String departureTime, String arrivalDate, String arrivalTime,
                   String carrier, int stops, int price) {
@@ -29,8 +31,10 @@ public class Flight {
         this.originName = originName;
         this.destination = destination;
         this.destinationName = destinationName;
-        this.departureTime = parseVvoTime(departureDate + " " + departureTime);
-        this.arrivalTime = parseTlvTime(arrivalDate + " " + arrivalTime);
+        this.departureTime = parseTimeWithZone(departureDate + " "
+                + departureTime, ZoneId.of("UTC+10:00"));
+        this.arrivalTime = parseTimeWithZone(arrivalDate + " "
+                + arrivalTime, ZoneId.of("UTC+02:00"));
         this.carrier = carrier;
         this.stops = stops;
         this.price = price;
@@ -41,15 +45,8 @@ public class Flight {
         return Duration.between(departureTime, arrivalTime);
     }
 
-    private ZonedDateTime parseVvoTime(String dateTimeString) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy H:mm");
-        LocalDateTime localDateTime = LocalDateTime.parse(dateTimeString, formatter);
-        return ZonedDateTime.of(localDateTime, ZoneId.of("UTC+10:00"));
-    }
-
-    private ZonedDateTime parseTlvTime(String dateTimeString) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy H:mm");
-        LocalDateTime localDateTime = LocalDateTime.parse(dateTimeString, formatter);
-        return ZonedDateTime.of(localDateTime, ZoneId.of("UTC+02:00"));
+    private ZonedDateTime parseTimeWithZone(String dateTimeString, ZoneId zoneId) {
+        LocalDateTime localDateTime = LocalDateTime.parse(dateTimeString, DATE_TIME_FORMATTER);
+        return ZonedDateTime.of(localDateTime, zoneId);
     }
 }
