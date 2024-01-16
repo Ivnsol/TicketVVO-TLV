@@ -32,9 +32,9 @@ public class Flight {
         this.destination = destination;
         this.destinationName = destinationName;
         this.departureTime = parseTimeWithZone(departureDate + " "
-                + departureTime, ZoneId.of("UTC+10:00"));
+                + departureTime, ZoneId.of("Asia/Vladivostok"));
         this.arrivalTime = parseTimeWithZone(arrivalDate + " "
-                + arrivalTime, ZoneId.of("UTC+02:00"));
+                + arrivalTime, ZoneId.of("Asia/Tel_Aviv"));
         this.carrier = carrier;
         this.stops = stops;
         this.price = price;
