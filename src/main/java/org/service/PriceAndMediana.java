@@ -11,6 +11,7 @@ public class PriceAndMediana {
 
         List<Integer> pricesForFlight = flights.stream()
                 .map(Flight::getPrice)
+                .sorted(Integer::compareTo)
                 .collect(Collectors.toList());
 
         double averagePrice = pricesForFlight.stream()
@@ -28,7 +29,9 @@ public class PriceAndMediana {
     private static double calculateMedian(List<Integer> prices) {
         int size = prices.size();
         if (size % 2 == 0) {
-            return (prices.get(size / 2 - 1) + prices.get(size / 2)) / 2.0;
+            int i = prices.get(size / 2 - 1);
+            int j = prices.get(size / 2);
+            return (i + j) / 2.0;
         } else {
             return prices.get(size / 2);
         }
